@@ -8,10 +8,21 @@
 
 import Foundation
 
-print("Hello, World!")
+let gameBoard = GameBoard(rows: 3, columns: 3);
+
+var someArray = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+// Check whether the function works
+if (gameBoard.SetLineValues(row: 0, numbers: someArray))
+{
+    print("SetLine Works");
+}
 
 // TODO Create Sudoku game
 public class Game
 {
+    // Create a GameBoard
     
+    // Set the values of the Lines - TODO Create function in GameBoard
+    // 
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		634DC750223F0BFA00AB23F9 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634DC74F223F0BFA00AB23F9 /* Box.swift */; };
+		636C1AC82248398200EF1B7A /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C1AC72248398200EF1B7A /* GameBoard.swift */; };
 		63F517EE223EDE4D00F9A222 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F517ED223EDE4D00F9A222 /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		634DC74F223F0BFA00AB23F9 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		636C1AC72248398200EF1B7A /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		63F517EA223EDE4D00F9A222 /* Sudoku */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Sudoku; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F517ED223EDE4D00F9A222 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -61,6 +63,7 @@
 			children = (
 				63F517ED223EDE4D00F9A222 /* main.swift */,
 				634DC74F223F0BFA00AB23F9 /* Box.swift */,
+				636C1AC72248398200EF1B7A /* GameBoard.swift */,
 			);
 			path = Sudoku;
 			sourceTree = "<group>";
@@ -123,6 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63F517EE223EDE4D00F9A222 /* main.swift in Sources */,
+				636C1AC82248398200EF1B7A /* GameBoard.swift in Sources */,
 				634DC750223F0BFA00AB23F9 /* Box.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

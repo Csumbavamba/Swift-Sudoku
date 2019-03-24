@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct Box<T>
+public struct Box
 {
     let rows: Int, columns: Int;
     var grid: [Int]; // 2 dimensional array
