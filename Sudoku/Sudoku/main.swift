@@ -8,21 +8,13 @@
 
 import Foundation
 
-let gameBoard = GameBoard(rows: 3, columns: 3);
 
-var someArray = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+let puzzleToSolve = "...............3.85..1.2.......5.7.....4...1...9.......5......73..2.1........4...9"
 
-// Check whether the function works
-if (gameBoard.SetLineValues(row: 0, numbers: someArray))
-{
-    print("SetLine Works");
-}
+let gameBoard = GameBoard(puzzle: puzzleToSolve)
+let solver = SudokuSolver(gameBoard: gameBoard)
 
-// TODO Create Sudoku game
-public class Game
-{
-    // Create a GameBoard
-    
-    // Set the values of the Lines - TODO Create function in GameBoard
-    // 
-}
+print (gameBoard)
+solver.bruteForce()
+print(solver.gameBoard)
+

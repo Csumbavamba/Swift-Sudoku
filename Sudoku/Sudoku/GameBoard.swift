@@ -8,59 +8,101 @@
 
 import Foundation
 
-public class GameBoard
+public struct BoardError:Error{}
+
+public struct GameBoard: CustomStringConvertible
 {
-    let rows: Int, columns: Int;
-    var grid: [Box]; // 2 dimensional array
     
-    init(rows: Int, columns: Int)
+    public var boxes: [[Node]]
+    
+    
+    init(puzzle: String)
     {
-        self.rows = rows;
-        self.columns = columns;
-        grid = Array(repeating: Box(rows: 3, columns: 3), count: rows * columns);
+        let characters = Array (puzzle.characters)
+        
+        // Populate the box
+        self.boxes = (0..<9).map({
+                boxIndex in return characters[boxIndex*9..<boxIndex*9+9]}).map(
+                    {
+                        nestedIndex in return nestedIndex.map(
+                            {char in
+                                
+                                if char == "." // maybe needs to be .
+                                {
+                                    return Node.PopulateNode();
+                                }
+                                else if let value = Int(String(char))
+                                {
+                                    return Node.LockValue(value);
+                                }
+                                else{fatalError()}
+                                
+                            })
+                    })
     }
     
-    func IsIndexValid(row: Int, column: Int) -> Bool
+    public var nodes: [Node]
     {
-        return row >= 0 && row < rows && column >= 0 && column < columns;
+        return Array(boxes.joined())
     }
     
-    subscript(row: Int, column: Int) -> Box
+    public var description: String
     {
-        get
-        {
-            // Check if Index is out of range
-            assert(IsIndexValid(row: row, column: column), "Index out of range");
-            return grid[(row * columns) + column];
-        }
-        set
-        {
-            // Check if Index is out of range
-            assert(IsIndexValid(row: row, column: column), "Index out of range");
-            grid[(row * columns) + column] = newValue;
-        }
+        return self.boxes.map (
+            {
+                row in return "[" + row.map ({$0.description}).joined(separator: " ") + "]\n"
+            }).joined()
+    }
+    
+    public var isSolved: Bool
+    {
+        return self.nodes.all(predicate: {$0.isFound})
+    }
+    
+    public func row(rowIndex index: Int)->[Node]
+    {
+        let rowIndex = index/9
+        return boxes[rowIndex]
+    }
+    
+    public func column(columIndex index: Int)->[Node]
+    {
+        let columnIndex = index/9
+        return self.boxes.map({row in return row[columnIndex]})
         
     }
     
-    func SetLineValues(row: Int, numbers: [Int]) -> Bool
+    public func box(Index index: Int)->[Node]
     {
-        // Check whether the array is out of range for the GameBoard
-        if (columns * 3 < numbers.count)
-        {
-            // Send a Warning that the line is too big
-            print("There are too many numbers inside the line you gave....");
-            return false;
-        }
-        // Check whether there were enough numbers given
-        else if (columns * 3 > numbers.count)
-        {
-            // Send a Warning that the line is too small
-            print("There are too few numbers inside the line you gave....");
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        let rowIndex = index/9
+        let columnIndex = index % 9;
+        let boxRowIndex = rowIndex / 3
+        let boxColumnIndex = columnIndex / 3
+        
+        return (0..<3).flatMap({
+            rowOffSet in return self.boxes[boxRowIndex * 3 + rowOffSet][boxColumnIndex*3..<boxColumnIndex*3 + 3]})
     }
+    
+    public func canUpdate(index: Int, toValue value: Int) -> Bool
+    {
+        return !self.row(rowIndex: index).contains(.LockValue(value))
+        && !self.column(columIndex: index).contains(.LockValue(value))
+        && !self.box(Index: index).contains(.LockValue(value))
+        
+    }
+    
+    public mutating func update(index: Int, values: [Int]) throws
+    {
+        if values.count == 1, let value = values.first,
+        self.canUpdate(index: index, toValue: value)
+        {
+            let newNode = Node(potentialValues: values)
+            let rowIndex = index/9
+            let columnIndex = index%9
+            self.boxes[rowIndex][columnIndex] = newNode
+        }
+        else {throw BoardError()}
+    }
+    
 }
+
