@@ -8,26 +8,33 @@
 
 import Foundation
 
-public struct BoardError:Error{}
+public struct ValueSet:Error{}
 
 public struct GameBoard: CustomStringConvertible
 {
     
-    public var boxes: [[Node]]
+    public var rows: [[Node]]
     
     
     init(puzzle: String)
     {
-        let characters = Array (puzzle.characters)
+        // let characters = Array (puzzle.characters)
+        
+        var characters: [Character] = []
+        
+        for Character in puzzle
+        {
+            characters.append(Character)
+        }
         
         // Populate the box
-        self.boxes = (0..<9).map({
-                boxIndex in return characters[boxIndex*9..<boxIndex*9+9]}).map(
+        self.rows = (0..<9).map({
+                rowIndex in return characters[rowIndex*9..<rowIndex*9+9]}).map(
                     {
                         nestedIndex in return nestedIndex.map(
                             {char in
                                 
-                                if char == "." // maybe needs to be .
+                                if char == "0" // maybe needs to be .
                                 {
                                     return Node.PopulateNode();
                                 }
@@ -43,12 +50,12 @@ public struct GameBoard: CustomStringConvertible
     
     public var nodes: [Node]
     {
-        return Array(boxes.joined())
+        return Array(rows.joined())
     }
     
     public var description: String
     {
-        return self.boxes.map (
+        return self.rows.map (
             {
                 row in return "[" + row.map ({$0.description}).joined(separator: " ") + "]\n"
             }).joined()
@@ -62,13 +69,13 @@ public struct GameBoard: CustomStringConvertible
     public func row(rowIndex index: Int)->[Node]
     {
         let rowIndex = index/9
-        return boxes[rowIndex]
+        return rows[rowIndex]
     }
     
     public func column(columIndex index: Int)->[Node]
     {
         let columnIndex = index/9
-        return self.boxes.map({row in return row[columnIndex]})
+        return self.rows.map({row in return row[columnIndex]})
         
     }
     
@@ -80,7 +87,7 @@ public struct GameBoard: CustomStringConvertible
         let boxColumnIndex = columnIndex / 3
         
         return (0..<3).flatMap({
-            rowOffSet in return self.boxes[boxRowIndex * 3 + rowOffSet][boxColumnIndex*3..<boxColumnIndex*3 + 3]})
+            rowOffSet in return self.rows[boxRowIndex * 3 + rowOffSet][boxColumnIndex*3..<boxColumnIndex*3 + 3]})
     }
     
     public func canUpdate(index: Int, toValue value: Int) -> Bool
@@ -99,9 +106,9 @@ public struct GameBoard: CustomStringConvertible
             let newNode = Node(potentialValues: values)
             let rowIndex = index/9
             let columnIndex = index%9
-            self.boxes[rowIndex][columnIndex] = newNode
+            self.rows[rowIndex][columnIndex] = newNode
         }
-        else {throw BoardError()}
+        else {throw ValueSet()}
     }
     
 }

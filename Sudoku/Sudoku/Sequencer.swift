@@ -24,3 +24,4 @@ extension Sequence
         return true;
     }
 }
+
