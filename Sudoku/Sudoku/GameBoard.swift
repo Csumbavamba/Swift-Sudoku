@@ -16,7 +16,7 @@ public struct GameBoard: CustomStringConvertible
     public var rows: [[Node]]
     
     
-    init(puzzle: String)
+    public init(puzzle: String)
     {
         // let characters = Array (puzzle.characters)
         
@@ -28,17 +28,16 @@ public struct GameBoard: CustomStringConvertible
         }
         
         // Populate the box
-        self.rows = (0..<9).map({
-                rowIndex in return characters[rowIndex*9..<rowIndex*9+9]}).map(
-                    {
-                        nestedIndex in return nestedIndex.map(
-                            {char in
-                                
-                                if char == "0" // maybe needs to be .
+        self.rows = (0..<9)
+            .map({ rowIndex in
+                return characters[rowIndex*9..<rowIndex*9+9]
+            }).map({nestedIndex in
+                return nestedIndex.map({ character in
+                                if character == "0" // maybe needs to be .
                                 {
                                     return Node.PopulateNode();
                                 }
-                                else if let value = Int(String(char))
+                                else if let value = Int(String(character))
                                 {
                                     return Node.LockValue(value);
                                 }
@@ -55,8 +54,7 @@ public struct GameBoard: CustomStringConvertible
     
     public var description: String
     {
-        return self.rows.map (
-            {
+        return self.rows.map({
                 row in return "[" + row.map ({$0.description}).joined(separator: " ") + "]\n"
             }).joined()
     }
@@ -74,7 +72,7 @@ public struct GameBoard: CustomStringConvertible
     
     public func column(columIndex index: Int)->[Node]
     {
-        let columnIndex = index/9
+        let columnIndex = index%9
         return self.rows.map({row in return row[columnIndex]})
         
     }

@@ -57,33 +57,28 @@ public class SudokuSolver
         
         if isSolved
         {
-            print("Sudoku Solved")
-            print(gameBoard)
             return
-            
         }
     
             
         let (index,node) = gameBoard.nodes.enumerated().first(where: {!$0.element.isFound})!
         
-        if index == 2
-        {
-            print("Index went through 2")
-        }
             
         for value in node.potentialValues{
             var currentBoard = self.gameBoard
-                
+            
+            
             do
             {
                 // See if the copied board can be updated or not
-                try currentBoard.update(index: index, values:  [value])
+                try currentBoard.update(index: index, values: [value])
                 print(currentBoard) // Print to screen
+                
                     
                     
             } catch let error {
                 if error is ValueSet {continue}
-            }
+                }
                 
             // print("Continue")
                 
@@ -92,11 +87,12 @@ public class SudokuSolver
                 
             if (sudokuSolver.isSolved)
             {
-                print("Sudoku Solved")
                 print(sudokuSolver.gameBoard)
                 self.gameBoard = sudokuSolver.gameBoard
             }
             
         }
+        
+        
     }
 }
